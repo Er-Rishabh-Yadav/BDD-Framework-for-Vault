@@ -56,7 +56,8 @@ class WebApp:
         if type in ["id", "xpath", "css"]:
             WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable((getattr(By, type.upper()), element)))
             self.find_element(type, element).click()
-
+    def wait_for_element( self, locator, timeout=10):
+        return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
     def take_screenshot_of_current_page(self):
         current_page = self.driver.current_url.split('/')[-1]
         screenshot_path = os.path.join(os.getcwd(), f"{current_page}_screenshot.png")
