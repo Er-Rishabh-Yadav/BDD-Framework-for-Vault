@@ -1,5 +1,3 @@
-MODEL_LIST_DROPDOWN="//button[@id='menu-button-Models']"
-MY_MODEL_OPTION='//*[@id="menu-button-Models"]/div[3]/ul/li[2]'
 MODEL_TABLE_ROW='//*[@id="root"]/div[2]/div[2]/div/div/div[1]/div[2]/div/div[2]/div[2]/div/div/div[1]/table/tbody/div/div/tr[2]'
 MY_MODEL_GLOBAL_SEARCH='//*[@id=":r5:"]'
 CREATE_MODEL_BUTTON="//button[@title='Create model.']"

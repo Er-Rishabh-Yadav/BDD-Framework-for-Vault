@@ -11,6 +11,7 @@ Feature: User Login
     Then I should be redirected to the dashboard page
     Then I take a screenshot of the dashboard
     # Then Stop the driver
+  
 
   Scenario:Logout Successfully
     Given User should loggedin

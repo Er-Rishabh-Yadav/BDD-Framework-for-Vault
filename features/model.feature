@@ -12,11 +12,11 @@ Feature:My Model
     When User click on the Model dropdown
     Then Select the My Models option
     Then User should be redirected to the My Models page
-    Then User should take an screenshot
+    Then User should take an screenshot My Models Page
 
     Scenario:Search a model with specific id
     Given User is on my models page
     When Search for "OCC-3453" model
     Then Right Click on the Model in a Table
     Then Click on the View Details button
-    Then User take a screenshot
+    Then User should take an screenshot of model summary page

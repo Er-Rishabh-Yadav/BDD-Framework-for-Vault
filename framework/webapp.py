@@ -31,7 +31,8 @@ class WebApp:
 
     def goto_page(self, page):
         self.driver.get(urljoin(settings['url'], page.lower()))
-
+    def get_page_url(self,page):
+        return urljoin(settings['url'],page.lower())
     def find_element(self, type, element):
         if type == "id":
             return self.driver.find_element(By.ID, element)
@@ -56,6 +57,9 @@ class WebApp:
         if type in ["id", "xpath", "css"]:
             WebDriverWait(self.driver, timeout).until(EC.element_to_be_clickable((getattr(By, type.upper()), element)))
             self.find_element(type, element).click()
+    
+    def wait_for_url_match(self, url, timeout=10):
+        WebDriverWait(self.driver, timeout).until(EC.url_matches(url))
     def wait_for_element( self, locator, timeout=10):
         return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
     def take_screenshot_of_current_page(self):
