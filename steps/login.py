@@ -9,7 +9,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from framework.webapp import webapp
-from constants.path_login import ACCOUNT_ID_XPATH, PASSWORD_XPATH, USERNAME_XPATH, LOGIN_BUTTON_XPATH, ERROR_MESSAGE_XPATH
+from locators.path_login import ACCOUNT_ID_XPATH, PASSWORD_XPATH, USERNAME_XPATH, LOGIN_BUTTON_XPATH, ERROR_MESSAGE_XPATH
 from pages.login import login
 
 
@@ -21,7 +21,7 @@ def step_impl(context, username, account_id, password):
 
 @then('I click the login button')
 def step_impl(context):
-    webapp.click_on('xpath',LOGIN_BUTTON_XPATH)
+    webapp.click_element((By.XPATH,LOGIN_BUTTON_XPATH))
     time.sleep(3)
 
 @then('I should be redirected to the dashboard page')
@@ -34,7 +34,7 @@ def step_impl(context):
 @then('I take a screenshot of the dashboard')
 def step_impl(context):
     time.sleep(3)
-    webapp.take_screenshot_of_current_page();
+    webapp.take_screenshot_of_current_page("dashboard");
     
 
 
@@ -47,15 +47,15 @@ def step_impl(context, username, account_id, password):
 @then('I should see an error massage "{error_massage}"')
 def step_impl(context, error_massage):
     time.sleep(2)
-    error_massage_element = webapp.find_element("xpath", ERROR_MESSAGE_XPATH)
-    assert error_massage_element.text == error_massage
+    error_massage_element = webapp.get_element_text((By.XPATH, ERROR_MESSAGE_XPATH))
+    assert error_massage_element == error_massage
     # time.sleep(2)
 
 
 @then('I take a screenshot of the error massage')
 def step_impl(context):
     time.sleep(3)
-    webapp.take_screenshot_of_current_page();
+    webapp.take_screenshot_of_current_page("error_of_invalid_credenitials");
 
 @given('User should loggedin')
 def step_impl(context):
@@ -71,4 +71,4 @@ def step_impl(context):
 
 @then('Take a screenshot of the landing page')
 def step_impl(context):
-    webapp.take_screenshot_of_current_page()
+    webapp.take_screenshot_of_current_page("login_landingpage")

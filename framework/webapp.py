@@ -6,6 +6,7 @@ from urllib.parse import urljoin
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from selenium.common.exceptions import ElementClickInterceptedException, ElementNotVisibleException, TimeoutException, NoSuchElementException, ElementNotInteractableException, InvalidElementStateException, InvalidSelectorException as EX
 
 
 class WebApp:
@@ -43,15 +44,7 @@ class WebApp:
         else:
             return None
 
-    def click_on(self, type, element):
-        if type in ["id", "xpath", "css"]:
-            self.find_element(type, element).click()
 
-    def send_value_to_element(self, type, element, value):
-        if type in ["id", "xpath", "css"]:
-            input_field = self.find_element(type, element)
-            input_field.clear()
-            input_field.send_keys(value)
 
     def wait_and_click(self, type, element, timeout=10):
         if type in ["id", "xpath", "css"]:
@@ -62,11 +55,50 @@ class WebApp:
         WebDriverWait(self.driver, timeout).until(EC.url_matches(url))
     def wait_for_element( self, locator, timeout=10):
         return WebDriverWait(self.driver, timeout).until(EC.presence_of_element_located(locator))
-    def take_screenshot_of_current_page(self):
+    def take_screenshot_of_current_page(self, name):
+        # Get the current page's name
         current_page = self.driver.current_url.split('/')[-1]
-        screenshot_path = os.path.join(os.getcwd(), f"{current_page}_screenshot.png")
-        self.driver.save_screenshot(screenshot_path)
 
+        # Create the directory 'screenshots/current_page' if it doesn't exist
+        screenshots_dir = os.path.join(os.getcwd(), 'screenshots', current_page)
+        os.makedirs(screenshots_dir, exist_ok=True)
+
+        # Define the screenshot path
+        screenshot_path = os.path.join(screenshots_dir, f"{name}.png")
+
+        # Take and save the screenshot
+        self.driver.save_screenshot(screenshot_path)
+    def click_element(self, by_locator):
+        try:
+            element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(by_locator))
+            self.driver.execute_script("arguments[0].click();", element)
+        except EX as e:
+            print("Exception! Can't click on the element")
+
+    def input_element(self, by_locator, text):
+        try:
+            WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(by_locator)).send_keys(text)
+        except EX as e:
+            print("Exception! Can't click on the element")
+
+    def get_element_text(self, by_locator):
+        element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(by_locator))
+        return element.text
+
+    def get_title(self):
+        return self.driver.title
+
+    def get_element_attribute(self, by_locator, attribute_name):
+        element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(by_locator))
+        return element.get_attribute(attribute_name)
+
+    def verify_element_displayed(self, by_locator):
+        try:
+            element = WebDriverWait(self.driver, 10).until(EC.visibility_of_element_located(by_locator))
+            return element.is_displayed()
+        
+        except:
+            return False
     def verify_component_exists(self, component):
         assert component in self.driver.find_element(By.TAG_NAME, 'body').text, \
             f"Component {component} not found on page"

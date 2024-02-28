@@ -2,10 +2,10 @@ from behave import given, when, then
 from pages.dashboard import dashboard
 from framework.webapp import webapp
 from locators.path_dashboard import REPORT_BUTTON
-
+from selenium.webdriver.common.by import By
 @when('I click on the report button')
 def step_impl(context):
-    webapp.wait_and_click(REPORT_BUTTON,20)
+    webapp.click_element((By.XPATH,REPORT_BUTTON))
 
 
 
